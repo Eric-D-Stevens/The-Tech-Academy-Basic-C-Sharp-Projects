@@ -12,8 +12,6 @@ namespace BlackJack
         {
             // Game init
             BlackJackGame game = new BlackJackGame();
-            game.Players = new List<string> { "Jack", "Jill", "Joe" };
-            game.ListPlayers();
 
             // Create Deck and shuffle
             Deck deck = new Deck();
