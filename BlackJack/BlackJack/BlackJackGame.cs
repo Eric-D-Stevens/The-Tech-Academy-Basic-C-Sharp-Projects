@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BlackJack
 {
-    class BlackJackGame : Game
-    {
+    class BlackJackGame : Game, IWalkAway
+    { 
         public override void Play()
         {
             throw new NotImplementedException();
@@ -17,6 +17,11 @@ namespace BlackJack
         {
             Console.WriteLine("Black Jack Players:");
             base.ListPlayers();
+        }
+
+        public void WalkAway(Player player)
+        {
+            throw new NotImplementedException();
         }
     }
 }
