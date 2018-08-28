@@ -15,14 +15,21 @@ namespace BlackJack
 
             // Create Deck and shuffle
             Deck deck = new Deck();
-            deck.Shuffle(3);
 
-            //// Print Deck
-            foreach (Card card in deck.Cards)
-            {
-                Console.WriteLine(card.Face + " of " + card.Suit);
-            }
-            Console.WriteLine("Cards In Deck: {0}", deck.Cards.Count);
+            int count = deck.Cards.Count(x => x.Face == Face.Ace);
+            Console.WriteLine(count);
+
+
+
+
+            ////deck.Shuffle(3);
+
+            ////// Print Deck
+            //foreach (Card card in deck.Cards)
+            //{
+            //    Console.WriteLine(card.Face + " of " + card.Suit);
+            //}
+            //Console.WriteLine("Cards In Deck: {0}", deck.Cards.Count);
 
 
             // Hold
