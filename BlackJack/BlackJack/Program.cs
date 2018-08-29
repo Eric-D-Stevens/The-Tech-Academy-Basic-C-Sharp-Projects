@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace BlackJack
 {
@@ -10,6 +11,14 @@ namespace BlackJack
     {
         static void Main(string[] args)
         {
+            // Write new file
+            //string text = "here is some other text";
+            //File.(@"..\..\logs\log.txt", text);
+
+            // Read Log
+            //string readLog = File.ReadAllText(@"..\..\logs\log.txt");
+            //Console.WriteLine(readLog);
+
             // Welcome and get player name and bank
             Console.WriteLine("Welcome to the Black Jack Game. Please enter your name");
             string playerName = Console.ReadLine();

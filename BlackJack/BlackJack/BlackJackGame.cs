@@ -99,8 +99,16 @@ namespace BlackJack
                         Console.WriteLine("{0} BUSTED! You loose your bet of {1}. Your new balance is now ", player.Name, this.Bets[player], player.Balance);
                         Console.WriteLine("Do you want to play again?");
                         answer = Console.ReadLine().ToLower();
-                        if(answer == "yes" || answer == "y") { player.isActivelyPlaying = true; }
-                        else { player.isActivelyPlaying = false; }
+                        if (answer == "yes" || answer == "y")
+                        {
+                            player.isActivelyPlaying = true;
+                            return;
+                        }
+                        else
+                        {
+                            player.isActivelyPlaying = false;
+                            return;
+                        }
                     }
                 }
             }

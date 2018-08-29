@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace BlackJack
 {
     public class Dealer
@@ -16,8 +16,14 @@ namespace BlackJack
         public void Deal(List<Card> Hand)
         {
             Hand.Add(Deck.Cards.First()); // adds top of deck to 'Hand'
-            Console.WriteLine(Deck.Cards.First().ToString() + "\n");
+            string card = string.Format(Deck.Cards.First().ToString() + "\n");
+            Console.WriteLine(card);
+            using (StreamWriter file = new StreamWriter(@"..\..\logs\cards_dealt.txt", true))
+            {
+                file.WriteLine(card);
+            }
             Deck.Cards.RemoveAt(0); // removes top of deck from 'Deck
+
         }
     }
 }
