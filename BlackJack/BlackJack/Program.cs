@@ -10,27 +10,29 @@ namespace BlackJack
     {
         static void Main(string[] args)
         {
-            // Game init
-            BlackJackGame game = new BlackJackGame();
+            // Welcome and get player name and bank
+            Console.WriteLine("Welcome to the Black Jack Game. Please enter your name");
+            string playerName = Console.ReadLine();
+            Console.WriteLine("How much money did you bring today?: ");
+            int bank = int.Parse(Console.ReadLine());
+            Console.WriteLine("Hello {0}, whould you like to play Black Jack", playerName);
+            string answer = Console.ReadLine().ToLower();
+            if (answer == "y" || answer == "yes")
+            {
+                // Initalize Player and Game, enter game loop.  
+                Player player = new Player(playerName, bank);
+                Game game = new BlackJackGame();
+                game += player; // operator overload, add player to "Game.Players" list
+                player.isActivelyPlaying = true; 
+                while(player.isActivelyPlaying && player.Balance > 0) // wants to play and has money
+                {
+                    game.Play(); // Main Game Loop, represents one hand
+                }
+                game -= player; // operator overload, remove player from game object
+                Console.WriteLine("Thank you for playing!"); 
+            }
 
-            // Create Deck and shuffle
-            Deck deck = new Deck();
-
-            int count = deck.Cards.Count(x => x.Face == Face.Ace);
-            Console.WriteLine(count);
-
-
-
-
-            ////deck.Shuffle(3);
-
-            ////// Print Deck
-            //foreach (Card card in deck.Cards)
-            //{
-            //    Console.WriteLine(card.Face + " of " + card.Suit);
-            //}
-            //Console.WriteLine("Cards In Deck: {0}", deck.Cards.Count);
-
+            Console.WriteLine("Feel free to look around the casino, have a nice day");
 
             // Hold
             Console.Read();

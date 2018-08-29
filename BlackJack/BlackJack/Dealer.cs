@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace BlackJack
 {
-    class Dealer
+    public class Dealer
     {
         public string Name { get; set; }
         public Deck  Deck { get; set; }
         public int Balance { get; set; }
 
+        // Deals a single card from top of deck into 'Hand' parameter
         public void Deal(List<Card> Hand)
         {
-            Hand.Add(Deck.Cards.First());
+            Hand.Add(Deck.Cards.First()); // adds top of deck to 'Hand'
             Console.WriteLine(Deck.Cards.First().ToString() + "\n");
-            Deck.Cards.RemoveAt(0);
+            Deck.Cards.RemoveAt(0); // removes top of deck from 'Deck
         }
     }
 }
