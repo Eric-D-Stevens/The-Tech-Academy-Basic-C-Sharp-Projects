@@ -11,6 +11,8 @@ namespace BlackJack
     {
         static void Main(string[] args)
         {
+            
+
             // Write new file
             //string text = "here is some other text";
             //File.(@"..\..\logs\log.txt", text);

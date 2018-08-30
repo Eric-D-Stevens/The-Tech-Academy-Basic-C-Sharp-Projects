@@ -20,6 +20,7 @@ namespace BlackJack
             Console.WriteLine(card);
             using (StreamWriter file = new StreamWriter(@"..\..\logs\cards_dealt.txt", true))
             {
+                file.WriteLine(DateTime.Now);
                 file.WriteLine(card);
             }
             Deck.Cards.RemoveAt(0); // removes top of deck from 'Deck
