@@ -27,10 +27,21 @@ namespace Casino.BlackJack
             Dealer.Deck.Shuffle(3);
 
             // Get Bets From Players
-            Console.WriteLine("Place your bet: ");
+            
             foreach(Player player in this.Players)
             {
-                int bet = int.Parse(Console.ReadLine());
+                bool validAnswer = false;
+                int bet = 0;
+                while (!validAnswer)
+                {
+                    Console.WriteLine("Place your bet: ");
+                    validAnswer = int.TryParse(Console.ReadLine(), out bet);
+                    if (!validAnswer) Console.WriteLine("only enter digits");
+                }
+                if (bet < 0) 
+                {
+                    throw new FraudException();
+                }
                 bool successfullyBet = player.Bet(bet);     // can player bet this ammount
                 if (!successfullyBet) { return; }           // if not, break to next hand in 'Program.cs'
                 this.Bets[player] = bet;
