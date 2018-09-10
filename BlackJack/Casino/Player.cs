@@ -8,7 +8,12 @@ namespace Casino
 {
     public class Player
     {
-        // Constructor
+        // Constructor 1 param
+        public Player(string name) : this(name, 100)
+        {
+
+        }
+        // Constructor 2 param
         public Player(string name, int beginningBalance)
         {
             Hand = new List<Card>();
@@ -22,7 +27,7 @@ namespace Casino
         public string Name { get; set; }
         public bool isActivelyPlaying { get; set; }
         public bool Stay { get; set; }
-
+        public Guid Id { get; set; }
         public bool Bet(int ammount)
         {
             if(Balance < ammount)
