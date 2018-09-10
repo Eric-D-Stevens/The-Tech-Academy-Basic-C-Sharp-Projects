@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJack
+namespace Casino.BlackJack
 {
-    class BlackJackGame : Game, IWalkAway
+    public class BlackJackGame : Game, IWalkAway
     {
         public BlackJackDealer Dealer { get; set; }
 
