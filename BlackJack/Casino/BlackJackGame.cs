@@ -40,7 +40,7 @@ namespace Casino.BlackJack
                 }
                 if (bet < 0) 
                 {
-                    throw new FraudException();
+                    throw new FraudException("Player attempting Fraud with negative number");
                 }
                 bool successfullyBet = player.Bet(bet);     // can player bet this ammount
                 if (!successfullyBet) { return; }           // if not, break to next hand in 'Program.cs'

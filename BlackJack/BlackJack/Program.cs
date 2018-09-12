@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using Casino;
 using Casino.BlackJack;
-
+using System.Data.SqlClient;
+using System.Data;
 
 namespace BlackJack
 {
@@ -18,13 +19,6 @@ namespace BlackJack
 
             Guid identifier = Guid.NewGuid();
 
-            // Write new file
-            //string text = "here is some other text";
-            //File.(@"..\..\logs\log.txt", text);
-
-            // Read Log
-            //string readLog = File.ReadAllText(@"..\..\logs\log.txt");
-            //Console.WriteLine(readLog);
 
             // Constructor Chaining Demo
             Player newPlayer = new Player("Eric");
@@ -33,11 +27,25 @@ namespace BlackJack
             Console.WriteLine("Welcome to the {0}! Please enter your name", casinoName);
             string playerName = Console.ReadLine();
 
+            // if admin query exceptions
+            if (playerName.ToLower() == "admin")
+            {
+                List<ExceptionEntity> Exceptions = ReadExceptions();
+                foreach (var exception in Exceptions)
+                {
+                    Console.Write(exception.Id + " | ");
+                    Console.Write(exception.ExceptionType + " | ");
+                    Console.Write(exception.ExceptionMessage + " | ");
+                    Console.Write(exception.TimeStamp + " | ");
+                    Console.WriteLine();
+                }
+                Console.ReadLine();
+            }
 
 
             int bank = 0;
             bool validAnswer = false;
-            while(!validAnswer)
+            while (!validAnswer)
             {
                 Console.WriteLine("How much money did you bring today?: ");
                 validAnswer = int.TryParse(Console.ReadLine(), out bank);
@@ -61,33 +69,38 @@ namespace BlackJack
 
 
                 game += player; // operator overload, add player to "Game.Players" list
-                player.isActivelyPlaying = true; 
-                while(player.isActivelyPlaying && player.Balance > 0) // wants to play and has money
+                player.isActivelyPlaying = true;
+                while (player.isActivelyPlaying && player.Balance > 0) // wants to play and has money
                 {
                     try
                     {
                         game.Play(); // Main Game Loop, represents one hand
                     }
-                    catch(FraudException)
+                    catch (FraudException ex)
                     {
                         Console.WriteLine("SECURITY, KICK THIS PERSON OUT!!!");
+                        UpdateDBWithException(ex);
+                        Console.ReadLine();
+                        return;
                     }
-                    catch(ArgumentException)
+                    catch (ArgumentException ex)
                     {
                         Console.WriteLine("An argument was entered incorrectly");
+                        UpdateDBWithException(ex);
                         Console.ReadLine();
                         return;
                     }
-                    catch(Exception)
+                    catch (Exception ex)
                     {
                         Console.WriteLine("ERROR ERROR ERROR ERROR ERROR");
+                        UpdateDBWithException(ex);
                         Console.ReadLine();
                         return;
                     }
-                    
+
                 }
                 game -= player; // operator overload, remove player from game object
-                Console.WriteLine("Thank you for playing!"); 
+                Console.WriteLine("Thank you for playing!");
             }
 
             Console.WriteLine("Feel free to look around the casino, have a nice day");
@@ -96,7 +109,68 @@ namespace BlackJack
             Console.Read();
         }
 
+        private static void UpdateDBWithException(Exception ex)
+        {
+            string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BlackJackGame;
+                                        Integrated Security=True;Connect Timeout=30;Encrypt=False;
+                                        TrustServerCertificate=False;ApplicationIntent=ReadWrite;
+                                        MultiSubnetFailover=False";
+            string queryString = @"INSERT INTO Exceptions (ExceptionType, ExceptionMessage, TimeStamp) VALUES" +
+                " (@ExceptionType, @ExceptionMessage, @TimeStamp)";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@ExceptionType", SqlDbType.VarChar);
+                command.Parameters.Add("@ExceptionMessage", SqlDbType.VarChar);
+                command.Parameters.Add("@TimeStamp", SqlDbType.DateTime);
+
+                command.Parameters["@ExceptionType"].Value = ex.GetType().ToString();
+                command.Parameters["@ExceptionMessage"].Value = ex.Message;
+                command.Parameters["@TimeStamp"].Value = DateTime.Now;
+
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
 
 
+
+
+
+            }
+        }
+
+        private static List<ExceptionEntity> ReadExceptions()
+        {
+            string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BlackJackGame;
+                                        Integrated Security=True;Connect Timeout=30;Encrypt=False;
+                                        TrustServerCertificate=False;ApplicationIntent=ReadWrite;
+                                        MultiSubnetFailover=False";
+            string queryString = @"Select Id, ExceptionType, ExceptionMessage, TimeStamp From Exceptions";
+
+            List<ExceptionEntity> Exceptions = new List<ExceptionEntity>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    ExceptionEntity exception = new ExceptionEntity();
+                    exception.Id = Convert.ToInt32(reader["Id"]);
+                    exception.ExceptionType = reader["ExceptionType"].ToString();
+                    exception.ExceptionMessage = reader["ExceptionMessage"].ToString();
+                    exception.TimeStamp = Convert.ToDateTime(reader["TimeStamp"]);
+                    Exceptions.Add(exception);
+                }
+                connection.Close();
+            }
+            return Exceptions;
+
+        }
     }
 }
