@@ -30,70 +30,66 @@ namespace NewsLetterAppMVC.Controllers
             }
             else
             {
-                string queryString = @"INSERT INTO SignUps (FirstName, LastName, EmailAddress) VALUES
-                                        (@FirstName, @LastName, @EmailAddress)";
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (NewsletterEntities db = new NewsletterEntities())
                 {
-                    SqlCommand command = new SqlCommand(queryString, connection);
-                    command.Parameters.Add("@FirstName", SqlDbType.VarChar);
-                    command.Parameters.Add("@LastName", SqlDbType.VarChar);
-                    command.Parameters.Add("@EmailAddress", SqlDbType.VarChar);
+                    var signup = new SignUp();
+                    signup.FirstName = firstName;
+                    signup.LastName = lastName;
+                    signup.EmailAddress = emailAddress;
 
-                    command.Parameters["@FirstName"].Value = firstName;
-                    command.Parameters["@LastName"].Value = lastName ;
-                    command.Parameters["@EmailAddress"].Value = emailAddress;
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-
+                    db.SignUps.Add(signup);
+                    db.SaveChanges();
                 }
 
 
-                return View("Success");
+
+                    //string queryString = @"INSERT INTO SignUps (FirstName, LastName, EmailAddress) VALUES
+                    //                        (@FirstName, @LastName, @EmailAddress)";
+
+                    //using (SqlConnection connection = new SqlConnection(connectionString))
+                    //{
+                    //    SqlCommand command = new SqlCommand(queryString, connection);
+                    //    command.Parameters.Add("@FirstName", SqlDbType.VarChar);
+                    //    command.Parameters.Add("@LastName", SqlDbType.VarChar);
+                    //    command.Parameters.Add("@EmailAddress", SqlDbType.VarChar);
+
+                    //    command.Parameters["@FirstName"].Value = firstName;
+                    //    command.Parameters["@LastName"].Value = lastName ;
+                    //    command.Parameters["@EmailAddress"].Value = emailAddress;
+
+                    //    connection.Open();
+                    //    command.ExecuteNonQuery();
+                    //    connection.Close();
+
+                    //}
+
+
+                    return View("Success");
             }
         }
 
         public ActionResult Admin()
         {
-            string queryString = @"SELECT Id, FirstName, LastName, EmailAddress, SocialSecurityNumber from SignUps";
-            List<NewsLetterSignUp> signups = new List<NewsLetterSignUp>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using(NewsletterEntities db = new NewsletterEntities())
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                var signups = db.SignUps;
+                var signupVms = new List<SignUpVM>();
+                foreach (var signup in signups)
                 {
-                    var signup = new NewsLetterSignUp();
-                    signup.Id = Convert.ToInt32(reader["Id"]);
-                    signup.firstName = reader["FirstName"].ToString();
-                    signup.lastName = reader["LastName"].ToString();
-                    signup.emailAddress = reader["EmailAddress"].ToString();
-                    signup.SocialSecurityNumber = reader["SocialSecurityNumber"].ToString();
-                    signups.Add(signup);
+                    var signupVm = new SignUpVM();
+                    signupVm.firstName = signup.FirstName;
+                    signupVm.lastName = signup.LastName;
+                    signupVm.emailAddress = signup.EmailAddress;
+                    signupVms.Add(signupVm);
+
                 }
-            }
 
-            var signupVms = new List<SignUpVM>();
-            foreach (var signup in signups)
-            {
-                var signupVm = new SignUpVM();
-                signupVm.firstName = signup.firstName;
-                signupVm.lastName = signup.lastName;
-                signupVm.emailAddress = signup.emailAddress;
-                signupVms.Add(signupVm);
-
+                return View(signupVms);
             }
 
 
 
-            return View(signupVms);
         }
     }
 }
