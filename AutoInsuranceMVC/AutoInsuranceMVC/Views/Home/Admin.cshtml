@@ -1,0 +1,42 @@
+﻿@using AutoInsuranceMVC.Models
+@model List<QuoteObject>
+
+@{ 
+    var quotes = ViewBag.Message;
+}
+@foreach (var quote in quotes)
+{
+<div class="row no-gutters m-3 mb-5">
+    <div class="card col-sm-12 col-md-10 col-lg-6 mx-auto shadow">
+        <div class="card-header text-center">
+            <h5 class="m-0">@quote.FirstName @quote.LastName</h5>
+            <p class="primary">@quote.EmailAddress</p>
+        </div>
+        <div class="card-body">
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Make: </td>
+                        <td>@quote.CarMake</td>
+                    </tr>
+                    <tr>
+                        <td>Model: </td>
+                        <td>@quote.CarModel</td>
+                    </tr>
+                    <tr>
+                        <td>Year: </td>
+                        <td>@quote.CarYear</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-center bg-danger text-warning">
+            <h5 class="m-0">
+                $ @quote.QuoteValue / month
+            </h5>
+        </div>
+    </div>
+</div>
+}
+

@@ -1,0 +1,50 @@
+﻿@using AutoInsuranceMVC
+@{
+    ViewBag.Title = "TheQuote";
+}
+
+
+@{ var theQuote = ViewBag.Message;}
+
+<div class="row no-gutters m-3 mb-5">
+    <div class="card col-sm-12 col-md-10 col-lg-6 mx-auto shadow">
+        <div class="card-header text-center">
+            <h5 class="m-0">@theQuote.FirstName @theQuote.LastName</h5>
+            <p class="primary">@theQuote.EmailAddress</p>
+        </div>
+        <div class="card-body">
+            @*<div class="col-4 m-0">
+                <p>Make:</p>
+                <p>Model:</p>
+                <p>Year:</p>
+                <p>Email:</p>
+            </div>
+            <div class="col-8 m-0">
+                <p>@theQuote.CarMake</p>
+                <p>@theQuote.CarModel</p>
+                <p>@theQuote.CarYear.ToString()</p>
+                <p>@theQuote.EmailAddress</p>
+            </div>*@
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Make: </td>
+                        <td>@theQuote.CarMake</td>
+                    </tr>
+                    <tr>
+                        <td>Model: </td>
+                        <td>@theQuote.CarModel</td>
+                    </tr>
+                    <tr>
+                        <td>Year: </td>
+                        <td>@theQuote.CarYear</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-center bg-danger text-warning">
+            <h5 class="m-0">$ @theQuote.QuoteValue / month</h5
+        </div>
+    </div>
+</div>

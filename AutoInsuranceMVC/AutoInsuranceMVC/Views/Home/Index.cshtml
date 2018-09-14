@@ -1,0 +1,79 @@
+﻿<div class="row no-gutters m-3 mb-5">
+    <div class="card col-sm-12 col-md-10 col-lg-6 mx-auto shadow">
+        <div class="card-header text-center">
+            <h5 class="m-0">Get Your Auto Insurance Quote Now</h5>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("GetQuote", "Home", FormMethod.Post))
+            {
+                //Personal Information
+                <div class="row no-gutters mb-4">
+                    <h4 class="mb-2 lead">Personal Information</h4>
+                    <div class="form-group col-md-12">
+                        <input name="FirstName" type="text" class="form-control" placeholder="First Name" />
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input name="LastName" type="text" class="form-control" placeholder="Last Name" />
+                    </div>
+                    <div class="form-group col-md-12 mb-1">
+                        <input name="EmailAddress" type="email" class="form-control" placeholder="Email" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="dob" class="small m-0">Date of Birth</label>
+                        <input name="Dob" type="date" class="form-control" id="dob" placeholder="dob" />
+                    </div>
+                </div>
+
+                // Auto Information
+                <div class="row no-gutters mb-4">
+                    <h4 class="mb-2 lead">Auto Information</h4>
+                    <div class="form-group col-md-12">
+                        <input name="CarYear" type="number" class="form-control" placeholder="Car Year" />
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input name="CarMake" type="text" class="form-control" placeholder="Care Make" />
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input name="CarModel" type="text" class="form-control" placeholder="Care Model" />
+                    </div>
+                </div>
+
+                // Driver History
+                <div class="row no-gutters mb-4">
+                    <h4 class="mb-2 lead">Driver History</h4>
+                    <div class="form-group col-md-12">
+                        <input name="Duis" type="number" class="form-control" placeholder="Number of DUIs" />
+                    </div>
+                    <div class="form-group col-md-12">
+                        <input name="SpeedingTickets" type="Number" class="form-control" placeholder="Number of Speeding Tickets" />
+                    </div>
+                </div>
+
+                // Coverage Type
+                <div class="row no-gutters mb-4">
+                    <h4 class="mb-2 lead">Coverage Type</h4>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Coverage" id="coverageFull" value="Full" checked>
+                            <label class="form-check-label" for="coverageFull">
+                                Full Coverage
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Coverage" id="coverageLiability" value="option2">
+                            <label class="form-check-label" for="coverageLiability">
+                                Liability
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-gutters mb-4">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-block btn-primary">Get Quote</button>
+                    </div>
+                </div>
+             }
+        </div>
+    </div>
+</div>
